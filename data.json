@@ -1,4 +1,17 @@
 {
-  "rsvps": [],
-  "wishes": []
+  "rsvps": [
+    {
+      "name": "Ziyad Aalyani",
+      "guests": 1,
+      "attending": true,
+      "at": "2026-10-05T18:39:48.524Z"
+    }
+  ],
+  "wishes": [
+    {
+      "name": "Ziyad Aalyani",
+      "message": "ybn",
+      "at": "2026-10-05T18:39:59.315Z"
+    }
+  ]
 }
