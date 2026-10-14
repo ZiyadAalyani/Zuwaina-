@@ -157,7 +157,7 @@ footer{background:linear-gradient(#fffaf7,#f9e5e9);padding-bottom:2rem}.studio-c
 
 /* Photorealistic wedding-hall backdrop with restrained, cinematic movement */
 #hero{isolation:isolate;perspective:1200px;overflow:hidden;background:#fff5f1}
-#hero .scene-decor{position:absolute!important;inset:0;z-index:0!important;overflow:hidden;pointer-events:none;transform-style:preserve-3d;background-image:linear-gradient(90deg,rgba(255,248,245,.03) 0%,rgba(255,248,245,.18) 20%,rgba(255,248,245,.98) 31%,rgba(255,248,245,1) 50%,rgba(255,248,245,.98) 69%,rgba(255,248,245,.18) 80%,rgba(255,248,245,.03) 100%),url('wedding-hall-backdrop.png');background-size:100% 100%,cover;background-repeat:no-repeat,no-repeat;background-position:center,center;animation:none}
+#hero .scene-decor{position:absolute!important;inset:0;z-index:0!important;overflow:hidden;pointer-events:none;transform-style:preserve-3d;background-image:linear-gradient(90deg,rgba(255,248,245,.03) 0%,rgba(255,248,245,.18) 20%,rgba(255,248,245,.98) 31%,rgba(255,248,245,1) 50%,rgba(255,248,245,.98) 69%,rgba(255,248,245,.18) 80%,rgba(255,248,245,.03) 100%),url('wedding-hall-backdrop.webp');background-size:100% 100%,cover;background-repeat:no-repeat,no-repeat;background-position:center,center;animation:none}
 #hero .scene-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 44%,rgba(255,255,255,.28),transparent 46%),linear-gradient(180deg,rgba(255,250,247,.08),rgba(245,219,218,.08) 70%,rgba(205,163,117,.12));animation:hallBreath 10s ease-in-out infinite alternate}
 /* The photographic curtains and marble columns are part of the backdrop, not faux CSS shapes. */
 .curtain,.pillar{display:none!important}
@@ -165,7 +165,7 @@ footer{background:linear-gradient(#fffaf7,#f9e5e9);padding-bottom:2rem}.studio-c
 #hero .blob{opacity:.18;filter:blur(90px)}
 @keyframes hallDrift{0%{background-position:center,49% 48%}100%{background-position:center,51% 52%}}
 @keyframes hallBreath{from{opacity:.65}to{opacity:1}}
-@media(max-width:600px){#hero .scene-decor{background-image:linear-gradient(90deg,rgba(255,248,245,.02),rgba(255,248,245,.25) 19%,rgba(255,248,245,.99) 29%,rgba(255,248,245,1) 50%,rgba(255,248,245,.99) 71%,rgba(255,248,245,.25) 81%,rgba(255,248,245,.02)),url('wedding-hall-backdrop.png');background-position:center,center;background-size:100% 100%,auto 100%;animation:none}#hero .tag{max-width:27ch}.floor-glow{left:-5%;width:110%}}
+@media(max-width:600px){#hero .scene-decor{background-image:linear-gradient(90deg,rgba(255,248,245,.02),rgba(255,248,245,.25) 19%,rgba(255,248,245,.99) 29%,rgba(255,248,245,1) 50%,rgba(255,248,245,.99) 71%,rgba(255,248,245,.25) 81%,rgba(255,248,245,.02)),url('wedding-hall-backdrop.webp');background-position:center,center;background-size:100% 100%,auto 100%;animation:none}#hero .tag{max-width:27ch}.floor-glow{left:-5%;width:110%}}
 @media(prefers-reduced-motion:reduce){#hero .scene-decor,#hero .scene-glow{animation:none!important}}
 
 /* Gentle, continuous breeze: slow parallax for the hall plus independent sheer-curtain sway. */
@@ -183,6 +183,28 @@ footer{background:linear-gradient(#fffaf7,#f9e5e9);padding-bottom:2rem}.studio-c
 @media(max-width:600px){#hero .curtain{width:clamp(78px,26vw,150px);opacity:.56}#hero .scene-decor{background-size:100% 100%,cover;background-repeat:no-repeat,no-repeat;animation:none!important}}
 @media(prefers-reduced-motion:reduce){#hero .scene-decor,#hero .scene-glow,#hero .curtain-left,#hero .curtain-right{animation:none!important}}
 
+
+/* Mobile performance: preserve the look while avoiding costly paint effects on phones. */
+@media (max-width: 768px) {
+  #hero { perspective: none; }
+  #hero .scene-decor { transform-style: flat; }
+  #hero .scene-glow { animation: mobileGlow 10s ease-in-out infinite alternate !important; filter: none !important; }
+  #hero .curtain { filter: none !important; will-change: transform; }
+  #hero .curtain i { filter: none !important; opacity: .42; }
+  #hero .curtain-left { animation: mobileCurtainLeft 8.5s ease-in-out infinite alternate !important; }
+  #hero .curtain-right { animation: mobileCurtainRight 9.4s ease-in-out infinite alternate !important; }
+  .glass, .form-glass, .studio-card { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .glass { box-shadow: 0 8px 24px rgba(133,76,88,.08) !important; }
+  .card, .studio-card { box-shadow: 0 8px 20px rgba(120,70,80,.07) !important; }
+  .spark { box-shadow: none !important; }
+  body:before { opacity: .12; }
+}
+@keyframes mobileGlow { from { opacity: .72; } to { opacity: .9; } }
+@keyframes mobileCurtainLeft { 0% { transform: translate3d(-.3%,0,0) rotate(-.7deg); } 50% { transform: translate3d(1.1%,.1%,0) rotate(1deg); } 100% { transform: translate3d(.2%,0,0) rotate(-.2deg); } }
+@keyframes mobileCurtainRight { 0% { transform: translate3d(.3%,0,0) rotate(.6deg); } 50% { transform: translate3d(-1.1%,.1%,0) rotate(-1deg); } 100% { transform: translate3d(-.2%,0,0) rotate(.2deg); } }
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  #hero .scene-glow, #hero .curtain-left, #hero .curtain-right { animation: none !important; }
+}
 </style></head>
 <body class="lock">
 <!-- <audio id="bgm" src="music.mp3" loop></audio> -->
@@ -317,10 +339,11 @@ const $=s=>document.querySelector(s),toast=m=>{const t=$('#toast');if(t)t.textCo
  const l=document.createElement('div');l.className='lan';l.style.cssText=`left:${x}%;--h:${h}px;animation-delay:-${d}s;opacity:0;animation-name:lanIn,sway`;l.innerHTML='<i></i>';$('#lanterns').append(l)});
 // 7777-style intro stars, staggered around the Bismillah
 const gs=$('#gateStars');
-if(gs){for(let i=0;i<42;i++){const st=document.createElement('i');st.style.cssText=`left:${4+Math.random()*92}%;top:${6+Math.random()*78}%;--t:${2.4+Math.random()*2.8}s;--d:${1.2+Math.random()*4.5}s`;gs.append(st)}}
+if(gs){const starCount=window.matchMedia('(max-width: 768px)').matches?18:42;for(let i=0;i<starCount;i++){const st=document.createElement('i');st.style.cssText=`left:${4+Math.random()*92}%;top:${6+Math.random()*78}%;--t:${2.4+Math.random()*2.8}s;--d:${1.2+Math.random()*4.5}s`;gs.append(st)}}
 
 // sparkles
-setInterval(()=>{const s=document.createElement('div');s.className='spark';s.style.cssText=`left:${Math.random()*100}vw;animation-duration:${6+Math.random()*6}s;opacity:${.4+Math.random()*.6}`;document.body.append(s);setTimeout(()=>s.remove(),12000)},500);
+const mobilePerf=window.matchMedia('(max-width: 768px)').matches;
+setInterval(()=>{if(document.hidden)return;const s=document.createElement('div');s.className='spark';s.style.cssText=`left:${Math.random()*100}vw;animation-duration:${6+Math.random()*6}s;opacity:${.4+Math.random()*.6}`;document.body.append(s);setTimeout(()=>s.remove(),12000)},mobilePerf?1800:1100);
 // Gate + finger-following draggable key (mouse, touch and stylus)
 const gate=$('#gate'),key=$('#key'),lockMedal=$('.medal');
 let drag=false,startX=0,startY=0,dx=0,dy=0,done=false;
@@ -352,7 +375,7 @@ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(!reduced){let lastTouchFx=0;document.addEventListener('pointerdown',e=>{if(e.target.closest('input,textarea,select,button,a,#key'))return;const now=Date.now();if(now-lastTouchFx<180)return;lastTouchFx=now;const r=document.createElement('span');r.className='touch-ripple';r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';document.body.append(r);setTimeout(()=>r.remove(),700);},{passive:true});}
 
 function makePetal(className, burst=false){const p=document.createElement('i');p.className=className;p.style.left=(Math.random()*100)+'vw';p.style.setProperty('--drift',((Math.random()-.5)*(burst?260:130))+'px');p.style.animationDuration=(burst?3+Math.random()*3:12+Math.random()*12)+'s';p.style.opacity=burst?String(.7+Math.random()*.3):String(.2+Math.random()*.45);if(burst){p.style.transform=`scale(${.7+Math.random()*1.2})`;p.style.top=(Math.random()*70)+'vh'}document.body.append(p);setTimeout(()=>p.remove(),burst?7000:26000)}
-if(!reduced){setInterval(()=>{if(!document.hidden)makePetal('rain-petal')},900);}
+if(!reduced){setInterval(()=>{if(!document.hidden)makePetal('rain-petal')},mobilePerf?2200:1400);}
 $('#petalButton').addEventListener('click',()=>{if(reduced)return;for(let i=0;i<34;i++)setTimeout(()=>makePetal('rose-petal',true),i*24);$('#petalButton').animate([{transform:'scale(1)'},{transform:'scale(1.15) rotate(-5deg)'},{transform:'scale(1)'}],{duration:420})});
 // Scroll-triggered reveals (staggered by the observer)
 const revealTargets=document.querySelectorAll('.glass,.frame,.card,.event,.note,.studio-card');revealTargets.forEach(el=>el.classList.add('reveal'));

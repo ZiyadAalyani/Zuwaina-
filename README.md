@@ -37,3 +37,6 @@ The local server receives RSVP submissions and wishes. The admin page is at **ht
 - Venue: Rolex Banquet, Ram Mandir Rd, near Skoda Service, Somani Gram, Jogeshwari West, Mumbai 400104, Maharashtra
 - Instagram: https://www.instagram.com/ziyad_aalyani/
 - Email: wedorastudio.byziyad@gmail.com
+
+
+Mobile performance update (October 2026): the wedding hall backdrop is served as a compressed WebP image, and phone layouts use lighter curtain/glow animations, reduced blur/shadow effects, and fewer decorative particles. Core invitation content and key unlock interaction are unchanged.
