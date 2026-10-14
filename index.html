@@ -24,7 +24,7 @@ h1,h2{font-weight:700;line-height:1.1}
  background:conic-gradient(#e9d08b,#a97d28,#f6e5ae,#a97d28,#e9d08b);box-shadow:0 0 50px rgba(199,154,59,.7);transition:opacity 1s}
 .medal::before{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--ivory);border:2px dashed var(--gold)}
 .hole{position:relative;width:34px;height:60px;background:#6b4a14;border-radius:17px 17px 6px 6px;clip-path:polygon(50% 0,100% 28%,100% 40%,70% 52%,78% 100%,22% 100%,30% 52%,0 40%,0 28%)}
-#key{position:absolute;z-index:4;bottom:12vh;font-size:4.2rem;cursor:grab;touch-action:none;filter:drop-shadow(0 0 14px #E9D08B);animation:bob 2s ease-in-out infinite;user-select:none}
+#key{position:absolute;z-index:4;bottom:12vh;font-size:4.2rem;cursor:grab;touch-action:none;filter:drop-shadow(0 0 14px #E9D08B);animation:bob 2s ease-in-out infinite;user-select:none;will-change:transform;}
 @keyframes bob{50%{translate:0 -10px}}
 #gate p{position:absolute;z-index:4;bottom:5vh;font-style:italic;color:var(--deep)}
 .top{position:absolute;z-index:4;top:7vh;text-align:center;font-size:1.5rem}
@@ -50,10 +50,10 @@ h1,h2{font-weight:700;line-height:1.1}
 .gate-copy .ar{font-size:2rem;text-shadow:0 0 22px rgba(233,208,139,.65)}
 .gate-copy span{display:block;margin-top:.45rem;font-size:.78rem;letter-spacing:.34em;text-transform:uppercase;color:#B24B6C}
 .medal{animation:medalIn 1.5s 2.7s cubic-bezier(.2,.8,.2,1) both,medalPulse 3.5s 4.2s ease-in-out infinite}
-#key{animation:keyFloat 2.2s 3.5s ease-in-out infinite;transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .3s}
+#key{opacity:0;animation:keyAppear .7s 3.25s ease-out forwards,keyFloat 2.2s 3.95s ease-in-out infinite;transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .3s}
 #gate>p{opacity:0;animation:copyIn 1.2s 4.2s ease forwards}
 .open .gate-rays,.open .gate-stars,.open .gate-orbit{opacity:0;transition:opacity .7s}
-@keyframes gateAura{to{opacity:1}}
+@keyframes keyAppear{from{opacity:0;transform:translateY(18px) scale(.75)}to{opacity:1;transform:translateY(0) scale(1)}} @keyframes gateAura{to{opacity:1}}
 @keyframes raysIn{to{opacity:1}}
 @keyframes raysSway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
 @keyframes starTwinkle{0%,100%{opacity:0;transform:scale(.5)}45%{opacity:.9;transform:scale(1.25)}60%{opacity:.25;transform:scale(.8)}}
@@ -139,6 +139,50 @@ footer{background:linear-gradient(#fffaf7,#f9e5e9);padding-bottom:2rem}.studio-c
 @media(max-width:600px){section{padding:10vh 5vw}.event{grid-template-columns:42px 1fr;gap:10px}.timeline:before{left:20px}.event-icon{width:42px;height:42px;font-size:.9rem}.event-card{padding:1.1rem;border-radius:20px}.event-tag{float:none;display:inline-block;margin:0 0 .7rem}.event-card h3{display:block}.event-time{display:inline-block;margin-bottom:.5rem}.studio-links{flex-direction:column;gap:.45rem}.studio-links>span{display:none}.featured-dua{padding:1.6rem 1.1rem}.petal-button{right:12px;bottom:12px}.petal-button span{display:none}.form-glass{padding:1.5rem 1.1rem}}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.rain-petal,.rose-petal{display:none}}
 
+/* DUA ALIGNMENT FIX: consistent card layout and correct Arabic RTL shaping */
+#duas .grid{align-items:stretch}
+#duas .card{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;min-width:0;box-sizing:border-box}
+#duas .card h3{align-self:center;max-width:100%;text-align:center;line-height:1.5}
+#duas .card .ar{direction:rtl;unicode-bidi:isolate;text-align:center;display:block;width:100%;max-width:100%;margin:1rem auto .8rem;font-family:'Amiri','Noto Naskh Arabic','Traditional Arabic',serif;font-weight:400;line-height:2.15;letter-spacing:0;word-spacing:normal;overflow-wrap:break-word;text-wrap:pretty}
+#duas .card>p:not(.ar){width:100%;text-align:center;line-height:1.85;margin-left:auto;margin-right:auto}
+#duas .featured-dua{justify-self:center;align-items:center}
+#duas .featured-dua .transliteration{max-width:48ch;margin:1.1rem auto;line-height:1.8}
+#duas .featured-dua .dua-source{letter-spacing:.16em;line-height:1.8;overflow-wrap:anywhere}
+@media(max-width:600px){#duas .grid{grid-template-columns:minmax(0,1fr)}#duas .card{padding:1.5rem 1.1rem}#duas .card .ar{font-size:clamp(1.55rem,6vw,2rem);line-height:2.05}#duas .featured-dua{width:100%;padding:1.6rem 1.1rem}}
+
+
+.touch-ripple{position:fixed;z-index:60;width:14px;height:14px;border:1px solid rgba(178,75,108,.55);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);animation:touchRipple .65s ease-out forwards}@keyframes touchRipple{to{width:76px;height:76px;opacity:0;border-width:1px}}
+#gate .medal{animation:medalIn 1.5s 1.6s cubic-bezier(.2,.8,.2,1) both,medalPulse 3.5s 3.1s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.touch-ripple{display:none!important;animation:none!important}*{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Photorealistic wedding-hall backdrop with restrained, cinematic movement */
+#hero{isolation:isolate;perspective:1200px;overflow:hidden;background:#fff5f1}
+#hero .scene-decor{position:absolute!important;inset:0;z-index:0!important;overflow:hidden;pointer-events:none;transform-style:preserve-3d;background-image:linear-gradient(90deg,rgba(255,248,245,.03) 0%,rgba(255,248,245,.18) 20%,rgba(255,248,245,.98) 31%,rgba(255,248,245,1) 50%,rgba(255,248,245,.98) 69%,rgba(255,248,245,.18) 80%,rgba(255,248,245,.03) 100%),url('wedding-hall-backdrop.png');background-size:100% 100%,cover;background-repeat:no-repeat,no-repeat;background-position:center,center;animation:none}
+#hero .scene-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 44%,rgba(255,255,255,.28),transparent 46%),linear-gradient(180deg,rgba(255,250,247,.08),rgba(245,219,218,.08) 70%,rgba(205,163,117,.12));animation:hallBreath 10s ease-in-out infinite alternate}
+/* The photographic curtains and marble columns are part of the backdrop, not faux CSS shapes. */
+.curtain,.pillar{display:none!important}
+.floor-glow{display:none!important}
+#hero .blob{opacity:.18;filter:blur(90px)}
+@keyframes hallDrift{0%{background-position:center,49% 48%}100%{background-position:center,51% 52%}}
+@keyframes hallBreath{from{opacity:.65}to{opacity:1}}
+@media(max-width:600px){#hero .scene-decor{background-image:linear-gradient(90deg,rgba(255,248,245,.02),rgba(255,248,245,.25) 19%,rgba(255,248,245,.99) 29%,rgba(255,248,245,1) 50%,rgba(255,248,245,.99) 71%,rgba(255,248,245,.25) 81%,rgba(255,248,245,.02)),url('wedding-hall-backdrop.png');background-position:center,center;background-size:100% 100%,auto 100%;animation:none}#hero .tag{max-width:27ch}.floor-glow{left:-5%;width:110%}}
+@media(prefers-reduced-motion:reduce){#hero .scene-decor,#hero .scene-glow{animation:none!important}}
+
+/* Gentle, continuous breeze: slow parallax for the hall plus independent sheer-curtain sway. */
+#hero .scene-decor{background-size:100% 100%,cover;background-repeat:no-repeat,no-repeat;background-position:center,center;animation:none!important;will-change:auto}
+#hero .scene-glow{animation:hallLightBreathe 9s ease-in-out infinite alternate}
+#hero .curtain{display:block!important;position:absolute;top:-4%;bottom:-5%;width:clamp(110px,23vw,360px);z-index:1;pointer-events:none;opacity:.72;filter:drop-shadow(0 12px 18px rgba(125,77,65,.12));transform-origin:top center;will-change:transform}
+#hero .curtain-left{left:-2%;clip-path:polygon(0 0,100% 0,91% 16%,82% 32%,72% 49%,65% 68%,52% 84%,39% 100%,0 100%);background:linear-gradient(90deg,rgba(255,250,245,.96),rgba(248,225,215,.82) 14%,rgba(255,248,239,.94) 27%,rgba(220,177,157,.32) 39%,rgba(255,247,238,.9) 51%,rgba(246,220,210,.58) 63%,rgba(255,249,242,.93) 76%,rgba(224,183,162,.38) 88%,rgba(255,246,237,.78));background-size:220% 100%;animation:curtainLeftBreeze 8.5s ease-in-out infinite alternate}
+#hero .curtain-right{right:-2%;clip-path:polygon(0 0,100% 0,100% 100%,61% 100%,48% 83%,36% 67%,29% 49%,19% 31%,9% 15%);background:linear-gradient(90deg,rgba(224,183,162,.38),rgba(255,249,242,.93) 12%,rgba(246,220,210,.58) 25%,rgba(255,247,238,.9) 39%,rgba(220,177,157,.32) 52%,rgba(255,248,239,.94) 64%,rgba(248,225,215,.82) 81%,rgba(255,250,245,.96));background-size:220% 100%;animation:curtainRightBreeze 9.4s ease-in-out infinite alternate}
+#hero .curtain i{position:absolute;top:-4%;bottom:-4%;width:14%;border-radius:0 0 50% 50%;background:linear-gradient(90deg,rgba(190,137,119,.13),rgba(255,255,255,.48) 40%,rgba(177,121,105,.12));filter:blur(1px);opacity:.65}
+#hero .curtain i:nth-child(1){left:8%}#hero .curtain i:nth-child(2){left:25%}#hero .curtain i:nth-child(3){left:43%}#hero .curtain i:nth-child(4){left:61%}#hero .curtain i:nth-child(5){left:79%}
+@keyframes hallBreeze{0%{background-position:center,49% 49%;background-size:100% 100%,cover}50%{background-position:center,51% 51%;background-size:100% 100%,cover}100%{background-position:center,50% 50%;background-size:100% 100%,cover}}
+@keyframes hallLightBreathe{0%{opacity:.62;filter:brightness(.99)}100%{opacity:.95;filter:brightness(1.04)}}
+@keyframes curtainLeftBreeze{0%{transform:translate3d(-.3%,0,0) rotate(-1.1deg) skewY(-.4deg);background-position:0% 50%}45%{transform:translate3d(1.8%,.2%,0) rotate(1.6deg) skewY(.6deg);background-position:45% 50%}100%{transform:translate3d(.4%,0,0) rotate(-.3deg) skewY(-.2deg);background-position:100% 50%}}
+@keyframes curtainRightBreeze{0%{transform:translate3d(.4%,0,0) rotate(1deg) skewY(.3deg);background-position:100% 50%}55%{transform:translate3d(-1.7%,.2%,0) rotate(-1.5deg) skewY(-.5deg);background-position:45% 50%}100%{transform:translate3d(-.3%,0,0) rotate(.2deg) skewY(.2deg);background-position:0% 50%}}
+@media(max-width:600px){#hero .curtain{width:clamp(78px,26vw,150px);opacity:.56}#hero .scene-decor{background-size:100% 100%,cover;background-repeat:no-repeat,no-repeat;animation:none!important}}
+@media(prefers-reduced-motion:reduce){#hero .scene-decor,#hero .scene-glow,#hero .curtain-left,#hero .curtain-right{animation:none!important}}
+
 </style></head>
 <body class="lock">
 <!-- <audio id="bgm" src="music.mp3" loop></audio> -->
@@ -150,19 +194,25 @@ footer{background:linear-gradient(#fffaf7,#f9e5e9);padding-bottom:2rem}.studio-c
  <div class="gate-stars" id="gateStars"></div>
  <div class="gate-orbit"></div>
  <div class="gate-copy"><div class="ar gold">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div><span>You are invited</span></div>
- <div class="medal"><div class="hole"></div></div>
- <div id="key" title="Drag the key to the lock">🗝️</div>
+ <div class="medal" aria-label="Decorative lock"><div class="hole"></div></div>
+ <div id="key" title="Drag the key to the lock" aria-label="Key; drag to unlock">🗝️</div>
  <p>Drag the key to the lock, or tap it</p>
 </div>
 
 <section id="hero">
+ <div class="scene-decor" aria-hidden="true">
+  <div class="scene-glow"></div>
+  <div class="curtain curtain-left"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="curtain curtain-right"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="pillar pillar-left"><b></b><span></span><em></em></div>
+  <div class="pillar pillar-right"><b></b><span></span><em></em></div>
+  <div class="floor-glow"></div>
+ </div>
  <div class="blob" style="width:340px;height:340px;background:var(--rose);top:-80px;left:-100px"></div>
  <div class="blob" style="width:300px;height:300px;background:var(--gold2);bottom:0;right:-90px"></div>
  <div class="ar bis">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
  <p class="tag">For a Love that found its way, for a Qadr that was already written, and for a journey we pray will be filled with Barakah.</p>
  <div class="arch"><b class="gold">Z ♡ S</b></div>
- <p class="qubool gold">Until we say <span>Qubool Hai</span></p>
- <p class="hero-date">Saturday, 19 December 2026 · 7:00 PM onwards</p>
  <a class="btn scroll-invite" href="#invite">Scroll to open <span aria-hidden="true">↓</span></a>
 </section>
 
@@ -175,19 +225,18 @@ footer{background:linear-gradient(#fffaf7,#f9e5e9);padding-bottom:2rem}.studio-c
   <p class="with">with</p>
   <h2 class="names gold">Sohail Mohammed Gaziyani</h2>
   <p class="small">S/o Saleem Ahemad Sultan Gaziyani</p>
-  <p style="margin-top:1.4rem;letter-spacing:.2em"><b>INSHA ALLAH NIKAH</b></p>
  </div>
 </section>
 
 <section id="details">
- <p class="date-label">THE DAY WE HAVE BEEN PRAYING FOR</p>
+ <p class="date-label">INSHA ALLAH NIKAH</p>
  <h2 class="gold date-heading">Saturday, 19 December 2026</h2>
  <p class="date-time">7:00 PM onwards · Mumbai</p>
  <p class="countdown-label">Our countdown to Qubool Hai</p>
  <div class="cd" id="cd"></div>
  <div class="glass">
   <h2>Venue</h2>
-  <p><b>Rolex Banquet</b><br>Ram Mandir Rd, near Skoda Service, Somani Gram,<br>Jogeshwari West, Mumbai 400104, Maharashtra</p>
+  <p><b>Rolex Banquet</b><br>1st Floor, Near F 99 Banquet, Somani Gram, Near Skoda Service Centre,<br>Behind Amrut Nagar, Ram Mandir Road (W), Mumbai - 400 102.</p>
   <a class="btn" href="https://share.google/000FTcOdFRhJxGmEN" target="_blank" rel="noopener">Open in Google Maps</a>
  </div>
 </section>
@@ -199,10 +248,10 @@ footer{background:linear-gradient(#fffaf7,#f9e5e9);padding-bottom:2rem}.studio-c
  <p class="schedule-intro">Every moment, a memory. Every prayer, a blessing.</p>
  <div class="timeline">
   <article class="event reveal"><span class="event-icon">☕</span><div class="event-card"><span class="event-time">19:00</span><span class="event-tag">WELCOME</span><h3>Welcome Reception &amp; Refreshments</h3><p class="event-ar">أَهْلًا وَسَهْلًا · Ahlan wa Sahlan</p><p class="event-desc">A warm welcome to our family and friends.</p></div></article>
-  <article class="event reveal"><span class="event-icon">♡</span><div class="event-card"><span class="event-time">20:00</span><span class="event-tag">SOLEMNIZATION</span><h3>The Sacred Nikah Ceremony</h3><p class="event-ar">عَقْدُ الْقِرَان · Solemnization</p><p class="event-desc">The blessed ceremony, recitation, khutbah, acceptance of vows and signing of the marriage contract.</p></div></article>
-  <article class="event reveal"><span class="event-icon">✧</span><div class="event-card"><span class="event-time">20:30</span><span class="event-tag">CELEBRATION</span><h3>Grand Entrance &amp; Portraiture</h3><p class="event-ar">الزِّفَّة وَالتَّصْوِير · Grand Entrance</p><p class="event-desc">A moment to celebrate, gather and capture memories together.</p></div></article>
-  <article class="event reveal"><span class="event-icon">♨</span><div class="event-card"><span class="event-time">21:30</span><span class="event-tag">BANQUET</span><h3>Opulent Royal Feast (Dastarkhwan)</h3><p class="event-ar">المَائِدَة المَلَكِيَّة · Royal Feast</p></div></article>
+  <article class="event reveal"><span class="event-icon">♡</span><div class="event-card"><span class="event-time">19:30</span><span class="event-tag">SOLEMNIZATION</span><h3>The Sacred Nikah Ceremony</h3><p class="event-ar">عَقْدُ الْقِرَان · Solemnization</p><p class="event-desc">The blessed ceremony, recitation, khutbah, acceptance of vows and signing of the marriage contract.</p></div></article>
+  <article class="event reveal"><span class="event-icon">♨</span><div class="event-card"><span class="event-time">20:00</span><span class="event-tag">BANQUET</span><h3>Opulent Royal Feast (Dastarkhwan)</h3><p class="event-ar">المَائِدَة المَلَكِيَّة · Royal Feast</p></div></article>
   <article class="event reveal"><span class="event-icon">☾</span><div class="event-card"><span class="event-time">23:00</span><span class="event-tag">FAREWELL</span><h3>Dua, Festivities &amp; Rukhsati</h3><p class="event-ar">الرُّخْصَة وَالْوَدَاع · Blessings &amp; Farewell</p><p class="event-desc">Closing the evening with duas and heartfelt goodbyes.</p></div></article>
+
  </div>
 </section>
 
@@ -272,19 +321,22 @@ if(gs){for(let i=0;i<42;i++){const st=document.createElement('i');st.style.cssTe
 
 // sparkles
 setInterval(()=>{const s=document.createElement('div');s.className='spark';s.style.cssText=`left:${Math.random()*100}vw;animation-duration:${6+Math.random()*6}s;opacity:${.4+Math.random()*.6}`;document.body.append(s);setTimeout(()=>s.remove(),12000)},500);
-// gate + key
-const gate=$('#gate'),key=$('#key');let drag=false,ox=0,oy=0,dx=0,dy=0,done=false;
-const unlock=()=>{if(done)return;done=true;
- const m=$('.medal').getBoundingClientRect(),k=key.getBoundingClientRect();
- key.style.transition='transform .7s';key.style.animation='none';
- key.style.transform=`translate(${dx+m.left+m.width/2-k.left-k.width/2}px,${dy+m.top+m.height/2-k.top-k.height/2}px) rotate(90deg)`;
+// Gate + finger-following draggable key (mouse, touch and stylus)
+const gate=$('#gate'),key=$('#key'),lockMedal=$('.medal');
+let drag=false,startX=0,startY=0,dx=0,dy=0,done=false;
+const resetKey=()=>{drag=false;key.style.transition='transform .24s ease-out';key.style.transform='';dx=dy=0;key.style.cursor='grab';setTimeout(()=>{if(!done){key.style.transition='';key.style.animation='keyFloat 2.2s ease-in-out infinite'}},260)};
+const unlock=()=>{if(done)return;done=true;drag=false;const m=lockMedal.getBoundingClientRect(),k=key.getBoundingClientRect();
+ // Move only by the remaining distance from the key's CURRENT position to the lock.
+ const tx=(m.left+m.width/2)-(k.left+k.width/2),ty=(m.top+m.height/2)-(k.top+k.height/2);
+ key.style.animation='none';key.style.opacity='1';key.style.pointerEvents='none';key.style.transition='transform .32s cubic-bezier(.2,.8,.2,1), filter .25s';
+ key.style.transform=`translate3d(${dx+tx}px,${dy+ty}px,0) rotate(90deg) scale(1.08)`;
  setTimeout(()=>{gate.classList.add('open');document.body.classList.remove('lock');
- for(let i=0;i<26;i++){const s=document.createElement('div');s.className='spark';s.style.cssText=`left:${42+Math.random()*16}vw;animation-duration:${2.5+Math.random()*2}s;opacity:${.6+Math.random()*.4}`;document.body.append(s);setTimeout(()=>s.remove(),5500)}$('#bgm')?.play();setTimeout(()=>gate.remove(),2400)},800)};
-key.addEventListener('pointerdown',e=>{drag=true;ox=e.clientX;oy=e.clientY;key.setPointerCapture(e.pointerId);key.style.animation='none'});
-key.addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-ox;dy=e.clientY-oy;key.style.transform=`translate(${dx}px,${dy}px)`});
-key.addEventListener('pointerup',e=>{drag=false;const m=$('.medal').getBoundingClientRect(),k=key.getBoundingClientRect();
- const d=Math.hypot(k.left+k.width/2-m.left-m.width/2,k.top+k.height/2-m.top-m.height/2);
- if(d<110||Math.hypot(dx,dy)<6)unlock();else{key.style.transform='';dx=dy=0;key.style.animation=''}});
+ for(let i=0;i<22;i++){const s=document.createElement('div');s.className='spark';s.style.cssText=`left:${42+Math.random()*16}vw;animation-duration:${2.5+Math.random()*2}s;opacity:${.6+Math.random()*.4}`;document.body.append(s);setTimeout(()=>s.remove(),5500)}
+ $('#bgm')?.play().catch(()=>{});setTimeout(()=>gate.remove(),1800)},340)};
+key.addEventListener('pointerdown',e=>{if(done)return;drag=true;startX=e.clientX;startY=e.clientY;key.setPointerCapture?.(e.pointerId);key.style.animation='none';key.style.opacity='1';key.style.visibility='visible';key.style.cursor='grabbing';key.style.transition='none';e.preventDefault()});
+key.addEventListener('pointermove',e=>{if(!drag||done)return;key.style.opacity='1';key.style.visibility='visible';dx=e.clientX-startX;dy=e.clientY-startY;key.style.transform=`translate3d(${dx}px,${dy}px,0) rotate(${Math.max(-25,Math.min(25,dx*.08))}deg)`;});
+const finishKeyDrag=e=>{if(!drag||done)return;drag=false;const m=lockMedal.getBoundingClientRect(),k=key.getBoundingClientRect();const d=Math.hypot(k.left+k.width/2-(m.left+m.width/2),k.top+k.height/2-(m.top+m.height/2));if(d<125)unlock();else resetKey()};
+key.addEventListener('pointerup',finishKeyDrag);key.addEventListener('pointercancel',()=>{if(!done)resetKey()});
 // countdown
 const T=new Date('2026-12-19T19:00:00+05:30');
 function updateCountdown(){let remaining=Math.max(0,Math.floor((T-Date.now())/1000));if(remaining===0){$('#cd').innerHTML='<div class="married-message"><b>Alhamdulillah, Married!</b><span>الحمد لله</span></div>';return}let s=remaining;const v=[['Days',86400],['Hours',3600],['Mins',60],['Secs',1]].map(([n,u])=>{const x=Math.floor(s/u);s%=u;return`<div><b>${x}</b>${n}</div>`});$('#cd').innerHTML=v.join('')}updateCountdown();setInterval(updateCountdown,1000);
@@ -296,6 +348,9 @@ async function loadWishes(){try{const r=await fetch('/api/wishes');if(!r.ok)retu
 loadWishes();
 // Gentle falling petals, with reduced-motion and visibility awareness
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Lightweight touch feedback: soft ripple and a few rose petals on tap (respects reduced motion).
+if(!reduced){let lastTouchFx=0;document.addEventListener('pointerdown',e=>{if(e.target.closest('input,textarea,select,button,a,#key'))return;const now=Date.now();if(now-lastTouchFx<180)return;lastTouchFx=now;const r=document.createElement('span');r.className='touch-ripple';r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';document.body.append(r);setTimeout(()=>r.remove(),700);},{passive:true});}
+
 function makePetal(className, burst=false){const p=document.createElement('i');p.className=className;p.style.left=(Math.random()*100)+'vw';p.style.setProperty('--drift',((Math.random()-.5)*(burst?260:130))+'px');p.style.animationDuration=(burst?3+Math.random()*3:12+Math.random()*12)+'s';p.style.opacity=burst?String(.7+Math.random()*.3):String(.2+Math.random()*.45);if(burst){p.style.transform=`scale(${.7+Math.random()*1.2})`;p.style.top=(Math.random()*70)+'vh'}document.body.append(p);setTimeout(()=>p.remove(),burst?7000:26000)}
 if(!reduced){setInterval(()=>{if(!document.hidden)makePetal('rain-petal')},900);}
 $('#petalButton').addEventListener('click',()=>{if(reduced)return;for(let i=0;i<34;i++)setTimeout(()=>makePetal('rose-petal',true),i*24);$('#petalButton').animate([{transform:'scale(1)'},{transform:'scale(1.15) rotate(-5deg)'},{transform:'scale(1)'}],{duration:420})});
